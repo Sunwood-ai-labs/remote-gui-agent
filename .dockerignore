@@ -1,0 +1,10 @@
+node_modules
+user_data
+logs
+uploads
+.git
+.gitignore
+README.md
+Dockerfile
+docker-compose.yml
+package-lock.json
