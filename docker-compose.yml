@@ -1,16 +1,39 @@
-version: '3.8'
+# 🎀 Multi-Container X-Post Agent ✨
 
 services:
-  x-post-agent:
+  # 🖥️ GUI Display Stack
+  display:
     build: .
-    container_name: x-post-agent
+    container_name: x-display
+    ports:
+      - "29190:8080" # noVNC
+    environment:
+      - VNC_PASSWORD=password
+      - SCREEN_WIDTH=1280
+      - SCREEN_HEIGHT=720
+      - SCREEN_DEPTH=24
     volumes:
+      - x11-socket:/tmp/.X11-unix # X11ソケットを共有 🤝
+    entrypoint: [ "./entrypoint.sh" ]
+    restart: unless-stopped
+
+  # 🎭 Playwright Agent
+  agent:
+    build: .
+    container_name: x-agent
+    depends_on:
+      - display
+    environment:
+      - DISPLAY=:99
+    volumes:
+      - x11-socket:/tmp/.X11-unix # ディスプレイをジャック！🚀
       - ./src:/app/src
       - ./uploads:/app/uploads
       - ./logs:/app/logs
-    ports:
-      - "19190:8080" # noVNC (Browser-based VNC)
-    environment:
-      - VNC_PASSWORD=password # 適宜変更してね🔐
-    shm_size: '2gb' # ブラウザがクラッシュしないようにメモリ確保🧠
-    restart: unless-stopped
+    shm_size: '2gb'
+    entrypoint: [] # entrypoint.shを動かさないようにするよ✨
+    command: [ "npm", "start" ]
+    restart: on-failure
+
+volumes:
+  x11-socket:
