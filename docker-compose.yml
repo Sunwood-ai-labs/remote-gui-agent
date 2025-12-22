@@ -30,6 +30,7 @@ services:
       - ./src:/app/src
       - ./uploads:/app/uploads
       - ./logs:/app/logs
+      - ./user_data:/app/user_data # ログイン情報をここに残すよ💖
     shm_size: '2gb'
     entrypoint: [] # entrypoint.shを動かさないようにするよ✨
     command: [ "npm", "start" ]
