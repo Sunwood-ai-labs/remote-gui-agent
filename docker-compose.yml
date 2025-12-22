@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  x-post-agent:
+    build: .
+    container_name: x-post-agent
+    volumes:
+      - ./src:/app/src
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    ports:
+      - "19190:8080" # noVNC (Browser-based VNC)
+    environment:
+      - VNC_PASSWORD=password # 適宜変更してね🔐
+    shm_size: '2gb' # ブラウザがクラッシュしないようにメモリ確保🧠
+    restart: unless-stopped
