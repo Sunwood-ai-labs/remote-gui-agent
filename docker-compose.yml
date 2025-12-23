@@ -17,6 +17,24 @@ services:
     entrypoint: [ "./entrypoint.sh" ]
     restart: unless-stopped
 
+  # 🌐 Normal Browser Helper (for manual login)
+  browser-helper:
+    build: .
+    container_name: browser-helper
+    entrypoint: [] # entrypoint.shを動かさないようにするよ✨
+    profiles:
+      - helper # docker compose --profile helper up で起動してね✨
+    depends_on:
+      - display
+    environment:
+      - DISPLAY=x-display:99
+    volumes:
+      - x11-socket:/tmp/.X11-unix
+      - ./user_data:/app/user_data
+    shm_size: '2gb'
+    command: [ "/bin/bash", "-c", "until timeout 1 bash -c 'cat < /dev/null > /dev/tcp/x-display/6099' 2>/dev/null; do echo 'Waiting for X server on x-display:6099...'; sleep 1; done; rm -f /app/user_data/Singleton* && /usr/bin/google-chrome-stable --user-data-dir=/app/user_data --no-sandbox --disable-gpu --disable-software-rasterizer" ]
+    restart: "no"
+
   # 🎭 Playwright Agent
   agent:
     build: .
@@ -24,7 +42,7 @@ services:
     depends_on:
       - display
     environment:
-      - DISPLAY=:99
+      - DISPLAY=x-display:99
     volumes:
       - x11-socket:/tmp/.X11-unix # ディスプレイをジャック！🚀
       - ./src:/app/src

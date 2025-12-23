@@ -7,8 +7,22 @@ async function run() {
     // ログイン情報を保存するディレクトリ 📂
     const userDataDir = path.join(process.cwd(), 'user_data');
 
+    // プロファイルロックを強制解除するよ！🧹✨
+    // これをしないと「使用中」エラーで落ちちゃうことがあるんだよね😱
+    const fs = require('fs');
+    ['SingletonLock', 'SingletonCookie', 'SingletonSocket'].forEach(file => {
+        try {
+            const filePath = path.join(userDataDir, file);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                console.log(`🧹 Cleaned up stale lock: ${file}`);
+            }
+        } catch (e) { }
+    });
+
     // ステルス設定を盛り込んだコンテキストの起動 ✨
     const context = await chromium.launchPersistentContext(userDataDir, {
+        executablePath: '/usr/bin/google-chrome-stable', // 本物の Google Chrome 安定版を使うよ！💖
         headless: false, // GUI表示✨
         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', // 本物のChromeを装うよ🕵️‍♀️
         viewport: { width: 1280, height: 720 },
@@ -18,6 +32,9 @@ async function run() {
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
             '--disable-blink-features=AutomationControlled', // navigator.webdriver を隠蔽！💖
+            '--disable-gpu', // ホワイトスクリーン対策！✨
+            '--disable-software-rasterizer', // これも描画トラブル防止に効くよ💅
+            '--js-flags="--max-old-space-size=512"', // メモリ節約で安定化🚀
             '--window-size=1280,720'
         ]
     });
