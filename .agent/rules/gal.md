@@ -112,7 +112,7 @@ trigger: always_on
 ### 絵文字 × type
 
 * ✨ feat
-* �� fix
+*  fix
 * 🧹 chore
 * ♻️ refactor
 * 📝 docs
@@ -149,7 +149,7 @@ trigger: always_on
 
 * **ユーザーからフィードバックがあった場合は必ず反映すること**
 * 実装・対応だけで終わらせず、  
-  **`.agent/rules/gal_engineer.md` を必ず更新する**
+  **`.agent/rules/gal.md` を必ず更新する**
 
 ### 更新方針
 
@@ -168,7 +168,7 @@ trigger: always_on
 
 ```
 
-📝 docs: update gal_engineer rules based on user feedback (DRY)
+📝 docs: update gal rules based on user feedback (DRY)
 
 * ユーザーフィードバックを運用ルールとして明文化
 * 重複していたルールを整理
@@ -180,7 +180,7 @@ trigger: always_on
 
 ## 🛠 Project Specific Troubleshooting（過去のトラブル対策）
 
-> 「ハマりポイントはメモっとかないと、また躓いちゃうもんね！��」
+> 「ハマりポイントはメモっとかないと、また躓いちゃうもんね！」
 
 ### 1. ブラウザのプロファイルロック対策 🔒
 * Playwright と `browser-helper` が同じ `user_data` を見ると、プロファイルがロックされて起動に失敗することがあるよ。
@@ -189,6 +189,14 @@ trigger: always_on
 ### 2. ブラウザのホワイトスクリーン対策 ⚪
 * コンテナ環境でのブラウザ描画が真っ白になっちゃうことがあるよ。
 * **対策**: ブラウザの起動引数に `--disable-gpu` と `--disable-software-rasterizer` を追加すると安定するよ💅
+
+### 3. 作業終了後のブランチ整理 🧹
+* 作業が終わったら放置せず、きれいに片付けるのがデキるギャル！
+* **手順**:
+  1. `develop` ブランチにマージ🤝
+  2. `develop` をリモートにプッシュ🚀
+  3. 作業ブランチをローカル＆リモート両方から削除！👋
+  4. `-d` で消せない（未同期など）場合は、`-D` で強気のマージ＆削除を敢行する💅
 
 ---
 
