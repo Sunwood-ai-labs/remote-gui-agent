@@ -15,9 +15,11 @@ async function run() {
             const filePath = path.join(userDataDir, file);
             if (fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath);
-                console.log(`🧹 Cleaned up stale lock: ${file}`);
+                console.log(`🧹 Cleaned up stale lock: ${file} ✨`);
             }
-        } catch (e) { }
+        } catch (e: any) {
+            console.warn(`⚠️ Could not clean up ${file}: ${e.message}`);
+        }
     });
 
     // ステルス設定を盛り込んだコンテキストの起動 ✨
