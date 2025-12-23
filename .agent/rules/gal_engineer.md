@@ -112,7 +112,7 @@ trigger: always_on
 ### 絵文字 × type
 
 * ✨ feat
-* 🐛 fix
+* �� fix
 * 🧹 chore
 * ♻️ refactor
 * 📝 docs
@@ -175,6 +175,20 @@ trigger: always_on
 * 今後の判断コスト削減を目的に更新
 
 ```
+
+---
+
+## 🛠 Project Specific Troubleshooting（過去のトラブル対策）
+
+> 「ハマりポイントはメモっとかないと、また躓いちゃうもんね！��」
+
+### 1. ブラウザのプロファイルロック対策 🔒
+* Playwright と `browser-helper` が同じ `user_data` を見ると、プロファイルがロックされて起動に失敗することがあるよ。
+* **対策**: 起動前に `SingletonLock`, `SingletonCookie`, `SingletonSocket` を削除するようにコードや `docker-compose.yml` の `command` に仕込んでおこう！🧹✨
+
+### 2. ブラウザのホワイトスクリーン対策 ⚪
+* コンテナ環境でのブラウザ描画が真っ白になっちゃうことがあるよ。
+* **対策**: ブラウザの起動引数に `--disable-gpu` と `--disable-software-rasterizer` を追加すると安定するよ💅
 
 ---
 
